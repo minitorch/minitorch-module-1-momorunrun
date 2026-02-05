@@ -44,7 +44,16 @@ class Linear(minitorch.Module):
 
     def forward(self, inputs):
         # TODO: Implement for Task 1.5.
-        raise NotImplementedError("Need to implement for Task 1.5")
+        # outputs = inputs @ self.weights + self.bias
+        outputs = []
+        for j in range(len(self.bias)):
+            # Compute the weighted sum for each output neuron
+            weighted_sum = self.bias[j]
+            for i in range(len(inputs)):
+                weighted_sum += inputs[i] * self.weights[i][j]
+            outputs.append(minitorch.Scalar(weighted_sum))
+        return outputs
+        # raise NotImplementedError("Need to implement for Task 1.5")
 
 
 def default_log_fn(epoch, total_loss, correct, losses):
