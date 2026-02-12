@@ -126,7 +126,7 @@ def log_back(x: float, k: float) -> float:
 
 def inv_back(x: float, k: float) -> float:
     """Computes the derivative of reciprocal times a second arg"""
-    return k / (x**2)
+    return -1.0 * k / (x**2)
     # raise NotImplementedError
 
 

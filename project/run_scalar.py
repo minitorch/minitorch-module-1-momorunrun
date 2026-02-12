@@ -45,14 +45,14 @@ class Linear(minitorch.Module):
     def forward(self, inputs):
         # TODO: Implement for Task 1.5.
         # outputs = inputs @ self.weights + self.bias
-        outputs = []
+        h = []
         for j in range(len(self.bias)):
             # Compute the weighted sum for each output neuron
-            weighted_sum = self.bias[j]
+            weighted_sum = self.bias[j].value
             for i in range(len(inputs)):
-                weighted_sum += inputs[i] * self.weights[i][j]
-            outputs.append(minitorch.Scalar(weighted_sum))
-        return outputs
+                weighted_sum += inputs[i] * self.weights[i][j].value
+            h.append(weighted_sum)
+        return h
         # raise NotImplementedError("Need to implement for Task 1.5")
 
 
@@ -67,7 +67,7 @@ class ScalarTrain:
 
     def run_one(self, x):
         return self.model.forward(
-            (minitorch.Scalar(x[0], name="x_1"), minitorch.Scalar(x[1], name="x_2"))
+            (minitorch.Scalar(x[0], back=None, name="x_1"), minitorch.Scalar(x[1], name="x_2"))
         )
 
     def train(self, data, learning_rate, max_epochs=500, log_fn=default_log_fn):
@@ -87,8 +87,8 @@ class ScalarTrain:
             for i in range(data.N):
                 x_1, x_2 = data.X[i]
                 y = data.y[i]
-                x_1 = minitorch.Scalar(x_1)
-                x_2 = minitorch.Scalar(x_2)
+                x_1 = minitorch.Scalar(x_1, back=None)
+                x_2 = minitorch.Scalar(x_2, back=None)
                 out = self.model.forward((x_1, x_2))
 
                 if y == 1:
